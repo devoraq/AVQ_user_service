@@ -8,14 +8,23 @@ import (
 
 	"github.com/DENFNC/awq_user_service/internal/app"
 	"github.com/DENFNC/awq_user_service/internal/infra/config"
+	"github.com/DENFNC/awq_user_service/internal/infra/db/postgres"
 )
 
 func main() {
 	logger := initLogger()
 
 	cfg := config.NewConfig(logger, "./.env.example")
-	application := app.New(logger, cfg)
 
+	db := postgres.NewDatabase(
+		logger,
+		postgres.WithMaxOpenConns(cfg.DatabaseConfig.MaxOpenConns),
+		postgres.WithMaxIdleConns(cfg.DatabaseConfig.MaxOpenIdleConns),
+	)
+
+	db.OpenDB(cfg.DatabaseConfig.ConnURL)
+
+	application := app.New(logger, cfg)
 	go application.App.Start()
 
 	sigCh := make(chan os.Signal, 1)

@@ -7,7 +7,9 @@ import (
 	"google.golang.org/grpc"
 )
 
-type UserService interface{}
+type UserService interface {
+	CreateUser()
+}
 
 type serverAPI struct {
 	v1.UnimplementedUserServiceServer
