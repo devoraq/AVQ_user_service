@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS
     private_data (
         id UUID PRIMARY KEY,
         user_id UUID NOT NULL REFERENCES users (id) ON DELETE RESTRICT,
-        first_name VARCHAR(100) NOT NULL,
-        last_name VARCHAR(100) NOT NULL,
+        first_name VARCHAR(100),
+        last_name VARCHAR(100),
         middle_name VARCHAR(100),
         date_of_birth DATE,
         gender VARCHAR(20),
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS
 CREATE TABLE IF NOT EXISTS
     account_data (
         user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE RESTRICT,
-        nick_name VARCHAR(50),
+        nickname VARCHAR(50),
         avatar_url TEXT,
         banner_url TEXT,
         bio TEXT,
@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS
     contact_data (
         user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE RESTRICT,
         phone VARCHAR(20),
-        email VARCHAR(255),
         country VARCHAR(100),
         city VARCHAR(100),
         street VARCHAR(150),

@@ -1,7 +1,25 @@
 syntax = "proto3";
 
 
-package v1.user_entity;
+import "google/protobuf/timestamp.proto";
 
 
-option go_package = "";
+package user.v1;
+
+
+option go_package = "github.com/DENFNC/awq_user_service/api/gen/go/user/v1;v1";
+
+
+message User {
+    string id = 1;
+    string user_role = 2;
+    string current_status = 3;
+    string system_status  = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+    google.protobuf.Timestamp last_login_at = 7;
+    google.protobuf.Timestamp last_activity_at = 8;
+    google.protobuf.Timestamp password_changed_at = 9;
+    google.protobuf.Timestamp deleted_at = 10;
+    bool is_deleted = 11;
+}

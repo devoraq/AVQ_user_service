@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+
+import "google/type/date.proto";
+import "user/v1/user_entity.proto";
+import "common/v1/paginate.proto";
+import "buf/validate/validate.proto";
+
+
+package user.v1;
+
+
+option go_package = "github.com/DENFNC/awq_user_service/api/gen/go/user/v1;v1";
+
+
+service UserService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+    rpc FetchUser(FetchUserRequest) returns (FetchUserResponse) {}
+    rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+}
+
+
+message CreateUserRequest {
+    string nickname = 1;
+    string password = 2;
+    string email = 3 [(buf.validate.field).string.email = true];
+    google.type.Date birthday = 4;
+}
+message CreateUserResponse {
+    string uid = 1;
+    string email = 2;
+    string nickname = 3;
+}
+
+
+message FetchUserRequest {
+    string uid = 1;
+}
+message FetchUserResponse {
+    user.v1.User user = 1;
+}
+
+
+message ListUsersRequest {
+    common.v1.PaginationRequest pagination = 1;
+}
+message ListUsersResponse {
+    repeated user.v1.User user = 1;
+    common.v1.PaginationResponse pagination = 2;
+}
+
+
+message DeleteUserRequest {
+    string uid = 1;
+}
+message DeleteUserResponse {
+    // Пустой ответ
+}

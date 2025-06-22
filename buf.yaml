@@ -1,0 +1,14 @@
+version: v2
+
+modules:
+  - path: api/proto
+
+lint:
+  enum_zero_value_suffix: _UNSPECIFIED
+  service_suffix: Service
+  use:
+    - STANDARD
+deps:
+  # - buf.build/grpc-ecosystem/grpc-gateway
+  - buf.build/googleapis/googleapis
+  - buf.build/bufbuild/protovalidate:v0.13.0

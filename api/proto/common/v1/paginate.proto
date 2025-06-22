@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+
+package common.v1;
+
+
+option go_package = "github.com/DENFNC/awq_user_service/api/gen/go/common/v1;common";
+
+
+message PaginationRequest {
+    uint32 page_size  = 1;
+    string page_token = 2;
+}
+message PaginationResponse {
+    uint32 page_size  = 1;
+    string page_token = 2;
+    bool   after_page = 3;
+}
