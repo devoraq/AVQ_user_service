@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS user_posts;
+DROP TABLE IF EXISTS user_post;
 
-DROP TABLE IF EXISTS user_notifications;
+DROP TABLE IF EXISTS user_notification;
 
-DROP TABLE IF EXISTS user_chats;
+DROP TABLE IF EXISTS user_chat;
 
 DROP TABLE IF EXISTS user_settings;
 

@@ -4,11 +4,17 @@ import (
 	"context"
 
 	v1 "github.com/DENFNC/awq_user_service/api/gen/go/user/v1"
+	dtoV1 "github.com/DENFNC/awq_user_service/internal/adapters/dto/v1"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type UserService interface {
-	CreateUser()
+	Create(
+		ctx context.Context,
+		user *dtoV1.UserCreateDTO,
+	) (string, error)
 }
 
 type serverAPI struct {
@@ -30,7 +36,21 @@ func (api *serverAPI) CreateUser(
 	ctx context.Context,
 	req *v1.CreateUserRequest,
 ) (*v1.CreateUserResponse, error) {
-	panic("implement me!")
+	dto := &dtoV1.UserCreateDTO{
+		Nickname: req.GetNickname(),
+		Password: req.GetPassword(),
+		Email:    req.GetEmail(),
+		Birthday: req.Birthday.AsTime(),
+	}
+
+	uid, err := api.svc.Create(ctx, dto)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "не удалось создать пользователя")
+	}
+
+	return &v1.CreateUserResponse{
+		Uid: uid,
+	}, nil
 }
 
 func (api *serverAPI) DeleteUser(

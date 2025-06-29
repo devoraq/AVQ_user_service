@@ -5,14 +5,16 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/doug-martin/goqu/v9"
 	_ "github.com/lib/pq"
 )
 
 type Option func(*databaseOption)
 
 type Database struct {
-	*slog.Logger
-	*databaseOption
+	log     *slog.Logger
+	Dialect *goqu.DialectWrapper
+	option  *databaseOption
 }
 
 func NewDatabase(
@@ -24,41 +26,48 @@ func NewDatabase(
 		opt(&dbOption)
 	}
 
+	dialect := goqu.Dialect("postgres")
+
 	return &Database{
-		Logger:         log,
-		databaseOption: &dbOption,
+		log:     log,
+		Dialect: &dialect,
+		option:  &dbOption,
 	}
 }
 
 type databaseOption struct {
-	MaxOpenConns    int
-	MaxIdleConns    int
-	ConnMaxIdleTime time.Duration
-	ConnMaxLifetime time.Duration
+	maxOpenConns    int
+	maxIdleConns    int
+	connMaxIdleTime time.Duration
+	connMaxLifetime time.Duration
 }
 
 func WithMaxOpenConns(maxConns int) Option {
 	return func(do *databaseOption) {
-		do.MaxOpenConns = maxConns
+		do.maxOpenConns = maxConns
 	}
 }
 
 func WithMaxIdleConns(maxIdleConns int) Option {
 	return func(do *databaseOption) {
-		do.MaxIdleConns = maxIdleConns
+		do.maxIdleConns = maxIdleConns
 	}
 }
 
 func WithConnMaxIdleTime(maxIdleTime time.Duration) Option {
 	return func(do *databaseOption) {
-		do.ConnMaxIdleTime = maxIdleTime
+		do.connMaxIdleTime = maxIdleTime
 	}
 }
 
 func WithConnMaxLifetime(maxLifeTime time.Duration) Option {
 	return func(do *databaseOption) {
-		do.ConnMaxLifetime = maxLifeTime
+		do.connMaxLifetime = maxLifeTime
 	}
+}
+
+func (db *Database) ReceiveDialect() *goqu.DialectWrapper {
+	return db.Dialect
 }
 
 func (db *Database) OpenDB(
@@ -67,7 +76,7 @@ func (db *Database) OpenDB(
 ) (*sql.DB, error) {
 	const op = "postgres.Database.OpenDB"
 
-	log := db.Logger.With("op", op)
+	log := db.log.With("op", op)
 
 	database, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
@@ -78,10 +87,10 @@ func (db *Database) OpenDB(
 		return nil, err
 	}
 
-	database.SetMaxOpenConns(db.MaxOpenConns)
-	database.SetMaxIdleConns(db.MaxIdleConns)
-	database.SetConnMaxIdleTime(db.ConnMaxIdleTime)
-	database.SetConnMaxLifetime(db.ConnMaxLifetime)
+	database.SetMaxOpenConns(db.option.maxOpenConns)
+	database.SetMaxIdleConns(db.option.maxIdleConns)
+	database.SetConnMaxIdleTime(db.option.connMaxIdleTime)
+	database.SetConnMaxLifetime(db.option.connMaxLifetime)
 
 	if err := database.Ping(); err != nil {
 		log.Error(

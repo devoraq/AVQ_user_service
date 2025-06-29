@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 
-import "google/type/date.proto";
+import "google/protobuf/timestamp.proto";
 import "user/v1/user_entity.proto";
 import "common/v1/paginate.proto";
 import "buf/validate/validate.proto";
@@ -25,12 +25,10 @@ message CreateUserRequest {
     string nickname = 1;
     string password = 2;
     string email = 3 [(buf.validate.field).string.email = true];
-    google.type.Date birthday = 4;
+    google.protobuf.Timestamp birthday = 4;
 }
 message CreateUserResponse {
     string uid = 1;
-    string email = 2;
-    string nickname = 3;
 }
 
 
@@ -49,6 +47,10 @@ message ListUsersResponse {
     repeated user.v1.User user = 1;
     common.v1.PaginationResponse pagination = 2;
 }
+
+
+message UserLockRequest {}
+message UserLockResponse {}
 
 
 message DeleteUserRequest {

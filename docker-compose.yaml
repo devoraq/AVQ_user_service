@@ -1,7 +1,8 @@
 services:
   postgres:
-    image: postgres:17.5-alpine3.22
+    image: postgres:18beta1-alpine3.22
     container_name: postgres
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin

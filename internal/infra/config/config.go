@@ -64,6 +64,7 @@ func NewConfig(
 			"Error parsing variables into structure",
 			slog.String("err", err.Error()),
 		)
+		panic(err)
 	}
 
 	return &cfg
