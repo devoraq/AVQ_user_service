@@ -39,7 +39,7 @@ func (api *serverAPI) CreateUser(
 
 	uid, err := api.svc.Create(ctx, &dto)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "не удалось создать пользователя")
+		return nil, status.Error(codes.Internal, "Couldn't create user")
 	}
 
 	return &v1.CreateUserResponse{

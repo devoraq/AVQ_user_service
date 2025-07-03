@@ -14,7 +14,7 @@ type UserRepository interface {
 	Save(
 		ctx context.Context,
 		agg *domain.UserAggregate,
-	) (string, error)
+	) error
 }
 
 type UserService struct {
@@ -54,7 +54,7 @@ func (svc *UserService) Create(
 		return "", err
 	}
 
-	id, err := svc.UserRepository.Save(ctx,
+	err = svc.UserRepository.Save(ctx,
 		&domain.UserAggregate{
 			User: &domain.User{
 				UID:      uid.String(),
@@ -79,7 +79,7 @@ func (svc *UserService) Create(
 		return "", err
 	}
 
-	return id, nil
+	return uid.String(), nil
 }
 
 func (svc *UserService) hashPassword(password string) (string, error) {

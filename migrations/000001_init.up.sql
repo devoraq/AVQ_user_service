@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS
         last_activity_at TIMESTAMPTZ DEFAULT NOW(),
         password_changed_at TIMESTAMPTZ DEFAULT NOW(),
         deleted_at TIMESTAMPTZ,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -22,8 +21,6 @@ CREATE TABLE IF NOT EXISTS
         middle_name VARCHAR(100) DEFAULT NULL,
         date_of_birth TIMESTAMPTZ DEFAULT NULL,
         gender VARCHAR(20) DEFAULT NULL,
-        deleted_at TIMESTAMPTZ DEFAULT NULL,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -34,8 +31,6 @@ CREATE TABLE IF NOT EXISTS
         bio TEXT DEFAULT NULL,
         status VARCHAR(255) DEFAULT NULL,
         socials JSONB DEFAULT NULL,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-        deleted_at TIMESTAMPTZ
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -48,8 +43,6 @@ CREATE TABLE IF NOT EXISTS
         building VARCHAR(50),
         apartment VARCHAR(50),
         postal_code VARCHAR(20),
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-        deleted_at TIMESTAMPTZ
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -60,8 +53,6 @@ CREATE TABLE IF NOT EXISTS
         password_hash TEXT NOT NULL,
         lockout_until TIMESTAMPTZ,
         error_login_attempts SMALLINT NOT NULL DEFAULT 0,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-        deleted_at TIMESTAMPTZ
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -72,8 +63,6 @@ CREATE TABLE IF NOT EXISTS
         messages_permission VARCHAR(20) NOT NULL,
         email_notifications BOOLEAN NOT NULL DEFAULT TRUE,
         push_notifications BOOLEAN NOT NULL DEFAULT TRUE,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-        deleted_at TIMESTAMPTZ,
         two_factor_enabled BOOLEAN NOT NULL DEFAULT FALSE
     );
 
@@ -82,8 +71,6 @@ CREATE TABLE IF NOT EXISTS
         user_id UUID NOT NULL REFERENCES users (id) ON DELETE RESTRICT,
         chat_id UUID NOT NULL,
         pinned BOOLEAN NOT NULL DEFAULT FALSE,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-        deleted_at TIMESTAMPTZ,
         PRIMARY KEY (user_id, chat_id)
     );
 
@@ -92,8 +79,6 @@ CREATE TABLE IF NOT EXISTS
         user_id UUID NOT NULL REFERENCES users (id) ON DELETE RESTRICT,
         notification_id UUID NOT NULL,
         unread BOOLEAN NOT NULL DEFAULT TRUE,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-        deleted_at TIMESTAMPTZ,
         PRIMARY KEY (user_id, notification_id)
     );
 
@@ -102,7 +87,5 @@ CREATE TABLE IF NOT EXISTS
         user_id UUID NOT NULL REFERENCES users (id) ON DELETE RESTRICT,
         post_id UUID NOT NULL,
         pinned BOOLEAN NOT NULL DEFAULT FALSE,
-        is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-        deleted_at TIMESTAMPTZ,
         PRIMARY KEY (user_id, post_id)
     );

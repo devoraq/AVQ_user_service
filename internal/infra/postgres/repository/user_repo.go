@@ -34,7 +34,7 @@ func NewUserRepository(
 func (repo *UserRepository) Save(
 	ctx context.Context,
 	agg *domain.UserAggregate,
-) (string, error) {
+) error {
 	const op = "repository.UserRepository.Save"
 
 	log := repo.Logger.With("op", op)
@@ -60,10 +60,10 @@ func (repo *UserRepository) Save(
 			"Transaction failed",
 			slog.String("err", err.Error()),
 		)
-		return "", err
+		return err
 	}
 
-	return "", nil
+	return nil
 }
 
 func insertData[T any](

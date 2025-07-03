@@ -2,7 +2,7 @@ syntax = "proto3";
 
 
 import "google/protobuf/timestamp.proto";
-import "user/v1/user_entity.proto";
+import "user/v1/entity.proto";
 import "common/v1/paginate.proto";
 import "buf/validate/validate.proto";
 
