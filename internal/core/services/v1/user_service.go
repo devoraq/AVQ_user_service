@@ -4,8 +4,9 @@ import (
 	"context"
 	"log/slog"
 
-	dtoV1 "github.com/DENFNC/awq_user_service/internal/adapters/dto/v1"
+	user "github.com/DENFNC/awq_user_service/internal/adapters/grpc/v1"
 	"github.com/DENFNC/awq_user_service/internal/core/domain"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -33,7 +34,7 @@ func NewUserService(
 
 func (svc *UserService) Create(
 	ctx context.Context,
-	dto *dtoV1.UserCreateDTO,
+	dto *user.CreateUserDTO,
 ) (string, error) {
 	const op = "service.UserService.Create"
 
@@ -48,15 +49,24 @@ func (svc *UserService) Create(
 		return "", err
 	}
 
-	uid, err := svc.UserRepository.Save(ctx,
+	uid, err := uuid.NewV7()
+	if err != nil {
+		return "", err
+	}
+
+	id, err := svc.UserRepository.Save(ctx,
 		&domain.UserAggregate{
 			User: &domain.User{
+				UID:      uid.String(),
 				Nickname: dto.Nickname,
 			},
 			PrivateData: &domain.PrivateData{
+				UserID:      uid.String(),
 				DateOfBirth: dto.Birthday,
 			},
 			SecurityData: &domain.SecurityData{
+				UserID:       uid.String(),
+				Login:        dto.Nickname,
 				Email:        dto.Email,
 				PasswordHash: passHash,
 			},
@@ -69,7 +79,7 @@ func (svc *UserService) Create(
 		return "", err
 	}
 
-	return uid, nil
+	return id, nil
 }
 
 func (svc *UserService) hashPassword(password string) (string, error) {
@@ -81,7 +91,7 @@ func (svc *UserService) hashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func (svc *UserService) checkPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
-}
+// func (svc *UserService) checkPasswordHash(password, hash string) bool {
+// 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+// 	return err == nil
+// }

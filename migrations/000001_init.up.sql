@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS
     users (
-        id UUID PRIMARY KEY DEFAULT uuidv7 (),
+        id UUID PRIMARY KEY NOT NULL,
         nickname VARCHAR(50) NOT NULL,
         user_role VARCHAR(20) NOT NULL DEFAULT 'user',
         -- current_status VARCHAR(20) NOT NULL,
-        system_status VARCHAR(15) NOT NULL DEFAULT 'Active',
+        system_status VARCHAR(15) NOT NULL DEFAULT 'active',
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         last_login_at TIMESTAMPTZ DEFAULT NOW(),
@@ -16,12 +16,11 @@ CREATE TABLE IF NOT EXISTS
 
 CREATE TABLE IF NOT EXISTS
     private_data (
-        id UUID PRIMARY KEY DEFAULT uuidv7 (),
-        user_id UUID NOT NULL REFERENCES users (id) ON DELETE RESTRICT,
+        user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE RESTRICT,
         first_name VARCHAR(100) DEFAULT NULL,
         last_name VARCHAR(100) DEFAULT NULL,
         middle_name VARCHAR(100) DEFAULT NULL,
-        date_of_birth TIMESTAMPTZ,
+        date_of_birth TIMESTAMPTZ DEFAULT NULL,
         gender VARCHAR(20) DEFAULT NULL,
         deleted_at TIMESTAMPTZ DEFAULT NULL,
         is_deleted BOOLEAN NOT NULL DEFAULT FALSE
@@ -29,8 +28,7 @@ CREATE TABLE IF NOT EXISTS
 
 CREATE TABLE IF NOT EXISTS
     account_data (
-        id UUID PRIMARY KEY DEFAULT uuidv7 (),
-        user_id UUID REFERENCES users (id) ON DELETE RESTRICT,
+        user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE RESTRICT,
         avatar_url TEXT DEFAULT NULL,
         banner_url TEXT DEFAULT NULL,
         bio TEXT DEFAULT NULL,
@@ -42,8 +40,7 @@ CREATE TABLE IF NOT EXISTS
 
 CREATE TABLE IF NOT EXISTS
     contact_data (
-        id UUID PRIMARY KEY DEFAULT uuidv7 (),
-        user_id UUID REFERENCES users (id) ON DELETE RESTRICT,
+        user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE RESTRICT,
         phone VARCHAR(20),
         country VARCHAR(100),
         city VARCHAR(100),
@@ -57,8 +54,7 @@ CREATE TABLE IF NOT EXISTS
 
 CREATE TABLE IF NOT EXISTS
     security_data (
-        id UUID PRIMARY KEY DEFAULT uuidv7 (),
-        user_id UUID REFERENCES users (id) ON DELETE RESTRICT,
+        user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE RESTRICT,
         login VARCHAR(50) UNIQUE NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
@@ -70,8 +66,7 @@ CREATE TABLE IF NOT EXISTS
 
 CREATE TABLE IF NOT EXISTS
     user_settings (
-        id UUID PRIMARY KEY DEFAULT uuidv7 (),
-        user_id UUID REFERENCES users (id) ON DELETE RESTRICT,
+        user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE RESTRICT,
         settings_language VARCHAR(2) NOT NULL,
         profile_visibility VARCHAR(20) NOT NULL,
         messages_permission VARCHAR(20) NOT NULL,
