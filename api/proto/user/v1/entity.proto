@@ -23,3 +23,87 @@ message User {
     google.protobuf.Timestamp deleted_at = 10;
     bool is_deleted = 11;
 }
+
+
+message PrivateData {
+    string user_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string middle_name = 4;
+    google.protobuf.Timestamp date_of_birth = 5;
+    string gender = 6;
+}
+
+
+message AccountData {
+    string user_id = 1;
+    string avatar_url = 2;
+    string banner_url = 3;
+    string bio = 4;
+    string status = 5;
+    string socials = 6;
+}
+
+
+message ContactData {
+    string user_id = 1;
+    string phone = 2;
+    string country = 3;
+    string city = 4;
+    string street = 5;
+    string building = 6;
+    string apartment = 7;
+    string postal_code = 8;
+}
+
+
+message SecurityData {
+    string user_id = 1;
+    string login = 2;
+    string email = 3;
+    string password_hash = 4;
+    google.protobuf.Timestamp lockout_until = 5;
+    int32 error_login_attempts = 6;
+}
+
+
+message UserSettings {
+    string user_id = 1;
+    string settings_language = 2;
+    string profile_visibility = 3;
+    string messages_permission = 4;
+    bool email_notifications = 5;
+    bool push_notifications = 6;
+    bool two_factor_enabled = 7;
+}
+
+
+message UserChat {
+    string user_id = 1;
+    string chat_id = 2;
+    bool pinned = 3;
+}
+
+
+message UserNotification {
+    string user_id = 1;
+    string notification_id = 2;
+    bool unread = 3;
+}
+
+
+message UserPost {
+    string user_id = 1;
+    string post_id = 2;
+    bool pinned = 3;
+}
+
+
+message UserProfile {
+    User user_data = 1;
+    PrivateData private_data = 2;
+    AccountData account_data = 3;
+    ContactData contact_data = 4;
+    SecurityData security_data = 5;
+    UserSettings user_settings = 6;
+}

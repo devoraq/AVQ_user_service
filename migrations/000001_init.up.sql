@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS
         last_login_at TIMESTAMPTZ DEFAULT NOW(),
         last_activity_at TIMESTAMPTZ DEFAULT NOW(),
         password_changed_at TIMESTAMPTZ DEFAULT NOW(),
-        deleted_at TIMESTAMPTZ,
+        deleted_at TIMESTAMPTZ
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS
         last_name VARCHAR(100) DEFAULT NULL,
         middle_name VARCHAR(100) DEFAULT NULL,
         date_of_birth TIMESTAMPTZ DEFAULT NULL,
-        gender VARCHAR(20) DEFAULT NULL,
+        gender VARCHAR(20) DEFAULT NULL
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS
         banner_url TEXT DEFAULT NULL,
         bio TEXT DEFAULT NULL,
         status VARCHAR(255) DEFAULT NULL,
-        socials JSONB DEFAULT NULL,
+        socials JSONB DEFAULT NULL
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS
         street VARCHAR(150),
         building VARCHAR(50),
         apartment VARCHAR(50),
-        postal_code VARCHAR(20),
+        postal_code VARCHAR(20)
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS
         email VARCHAR(255) UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         lockout_until TIMESTAMPTZ,
-        error_login_attempts SMALLINT NOT NULL DEFAULT 0,
+        error_login_attempts SMALLINT NOT NULL DEFAULT 0
     );
 
 CREATE TABLE IF NOT EXISTS

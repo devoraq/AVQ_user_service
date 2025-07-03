@@ -37,14 +37,12 @@ func (api *serverAPI) CreateUser(
 ) (*v1.CreateUserResponse, error) {
 	dto := CreateUserRequestToDTO(req)
 
-	uid, err := api.svc.Create(ctx, &dto)
+	_, err := api.svc.Create(ctx, &dto)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Couldn't create user")
 	}
 
-	return &v1.CreateUserResponse{
-		Uid: uid,
-	}, nil
+	return &v1.CreateUserResponse{}, nil
 }
 
 func (api *serverAPI) DeleteUser(
