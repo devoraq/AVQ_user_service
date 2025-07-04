@@ -1,8 +1,6 @@
 package domain
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
@@ -13,6 +11,4 @@ type AccountData struct {
 	Bio       string
 	Status    string
 	Socials   map[string]any
-	IsDeleted bool
-	DeletedAt time.Time
 }

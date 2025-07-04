@@ -5,9 +5,10 @@ import (
 	"database/sql"
 	"log/slog"
 
-	"github.com/DENFNC/awq_user_service/internal/adapters/mapper"
 	"github.com/DENFNC/awq_user_service/internal/core/domain"
+	"github.com/DENFNC/awq_user_service/internal/infra/postgres/dao"
 	"github.com/DENFNC/awq_user_service/internal/utils/dbutils"
+	"github.com/DENFNC/awq_user_service/internal/utils/mapping"
 	"github.com/doug-martin/goqu/v9"
 	_ "github.com/doug-martin/goqu/v9/dialect/postgres"
 )
@@ -39,18 +40,28 @@ func (repo *UserRepository) Save(
 
 	log := repo.Logger.With("op", op)
 
-	daoUser := mapper.UserToDAO(agg.User)
-	daoSecData := mapper.SecurityDataToDAO(agg.SecurityData)
-	daoPrivData := mapper.PrivateDataToDAO(agg.PrivateData)
+	var daoUser dao.User
+	var daoSecData dao.SecurityData
+	var daoPrivData dao.PrivateData
+
+	if err := mapping.MappingStructDAO(agg.User, &daoUser); err != nil {
+		return err
+	}
+	if err := mapping.MappingStructDAO(agg.SecurityData, &daoSecData); err != nil {
+		return err
+	}
+	if err := mapping.MappingStructDAO(agg.PrivateData, &daoPrivData); err != nil {
+		return err
+	}
 
 	err := dbutils.WithTransaction(ctx, repo.DB, func(tx *sql.Tx) error {
-		if err := insertData(ctx, tx, repo.DialectWrapper, "users", daoUser); err != nil {
+		if err := insertData(ctx, tx, repo.DialectWrapper, "users", &daoUser); err != nil {
 			return err
 		}
-		if err := insertData(ctx, tx, repo.DialectWrapper, "security_data", daoSecData); err != nil {
+		if err := insertData(ctx, tx, repo.DialectWrapper, "security_data", &daoSecData); err != nil {
 			return err
 		}
-		if err := insertData(ctx, tx, repo.DialectWrapper, "private_data", daoPrivData); err != nil {
+		if err := insertData(ctx, tx, repo.DialectWrapper, "private_data", &daoPrivData); err != nil {
 			return err
 		}
 		return nil

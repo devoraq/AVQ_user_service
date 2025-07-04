@@ -9,6 +9,4 @@ type SecurityData struct {
 	PasswordHash       string
 	LockoutUntil       time.Time
 	ErrorLoginAttempts int
-	IsDeleted          bool
-	DeletedAt          time.Time
 }

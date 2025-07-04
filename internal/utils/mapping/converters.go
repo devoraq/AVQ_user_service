@@ -1,4 +1,4 @@
-package mapper
+package mapping
 
 import (
 	"database/sql"
@@ -32,6 +32,20 @@ func toNullBool(val bool) sql.NullBool {
 func toNullInt16(val int16) sql.NullInt16 {
 	return sql.NullInt16{
 		Int16: val,
+		Valid: true,
+	}
+}
+
+func toNullInt32(val int32) sql.NullInt32 {
+	return sql.NullInt32{
+		Int32: val,
+		Valid: true,
+	}
+}
+
+func toNullInt64(val int64) sql.NullInt64 {
+	return sql.NullInt64{
+		Int64: val,
 		Valid: true,
 	}
 }

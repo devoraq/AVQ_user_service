@@ -26,7 +26,6 @@ message CreateUserRequest {
     string password = 2;
     string email = 3 [(buf.validate.field).string.email = true];
     google.protobuf.Timestamp birthday = 4;
-    user.v1.UserProfile user_profile = 5;
 }
 message CreateUserResponse {
     user.v1.UserProfile user_profile = 1;

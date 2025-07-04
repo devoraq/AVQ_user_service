@@ -11,6 +11,4 @@ type PrivateData struct {
 	MiddleName  string
 	DateOfBirth time.Time
 	Gender      string
-	DeletedAt   time.Time
-	IsDeleted   bool
 }

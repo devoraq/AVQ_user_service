@@ -35,6 +35,7 @@ func (api *serverAPI) CreateUser(
 	ctx context.Context,
 	req *v1.CreateUserRequest,
 ) (*v1.CreateUserResponse, error) {
+	panic("test")
 	dto := CreateUserRequestToDTO(req)
 
 	_, err := api.svc.Create(ctx, &dto)

@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"net"
 
+	"github.com/DENFNC/awq_user_service/internal/app/interceptor"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -24,7 +25,17 @@ func NewApp(
 	reflect bool,
 	handlers ...HandlerRegisterer,
 ) *App {
-	grpcServer := grpc.NewServer()
+	const op = "grpc.NewApp"
+
+	log = log.With("op", op)
+
+	grpcServer := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			interceptor.PanicRecoveryInterceptor(log),
+			interceptor.LoggerInterceptor(log),
+			// interceptor.ValidateInterceptor(log),
+		),
+	)
 
 	if reflect {
 		log.Info(

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS
         updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         last_login_at TIMESTAMPTZ DEFAULT NOW(),
         last_activity_at TIMESTAMPTZ DEFAULT NOW(),
-        password_changed_at TIMESTAMPTZ DEFAULT NOW(),
+        password_changed_at TIMESTAMPTZ DEFAULT NULL,
         deleted_at TIMESTAMPTZ
     );
 
