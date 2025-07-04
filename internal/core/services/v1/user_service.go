@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	user "github.com/DENFNC/awq_user_service/internal/adapters/grpc/v1"
+	"github.com/DENFNC/awq_user_service/internal/adapters/dto"
 	"github.com/DENFNC/awq_user_service/internal/core/domain"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -34,7 +34,7 @@ func NewUserService(
 
 func (svc *UserService) Create(
 	ctx context.Context,
-	dto *user.CreateUserDTO,
+	dto *dto.CreateUserDTO,
 ) (string, error) {
 	const op = "service.UserService.Create"
 

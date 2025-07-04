@@ -8,5 +8,5 @@ type SecurityData struct {
 	Email              sql.NullString `db:"email" goqu:"omitempty"`
 	PasswordHash       sql.NullString `db:"password_hash" goqu:"omitempty"`
 	LockoutUntil       sql.NullTime   `db:"lockout_until" goqu:"omitempty"`
-	ErrorLoginAttempts sql.NullInt16  `db:"error_login_attempts" goqu:"omitempty"`
+	ErrorLoginAttempts sql.NullInt32  `db:"error_login_attempts" goqu:"omitempty"`
 }

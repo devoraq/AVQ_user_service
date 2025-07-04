@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS
         email VARCHAR(255) UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         lockout_until TIMESTAMPTZ,
-        error_login_attempts SMALLINT NOT NULL DEFAULT 0
+        error_login_attempts INTEGER NOT NULL DEFAULT 0
     );
 
 CREATE TABLE IF NOT EXISTS

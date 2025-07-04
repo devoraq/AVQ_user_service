@@ -104,6 +104,5 @@ message UserProfile {
     PrivateData private_data = 2;
     AccountData account_data = 3;
     ContactData contact_data = 4;
-    SecurityData security_data = 5;
     UserSettings user_settings = 6;
 }

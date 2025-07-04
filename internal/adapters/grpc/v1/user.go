@@ -4,6 +4,8 @@ import (
 	"context"
 
 	v1 "github.com/DENFNC/awq_user_service/api/gen/go/user/v1"
+	"github.com/DENFNC/awq_user_service/internal/adapters/dto"
+	"github.com/DENFNC/awq_user_service/internal/utils/mapping"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -12,7 +14,7 @@ import (
 type UserService interface {
 	Create(
 		ctx context.Context,
-		user *CreateUserDTO,
+		user *dto.CreateUserDTO,
 	) (string, error)
 }
 
@@ -35,15 +37,20 @@ func (api *serverAPI) CreateUser(
 	ctx context.Context,
 	req *v1.CreateUserRequest,
 ) (*v1.CreateUserResponse, error) {
-	panic("test")
-	dto := CreateUserRequestToDTO(req)
+	var dtoUser dto.CreateUserDTO
 
-	_, err := api.svc.Create(ctx, &dto)
+	if err := mapping.MapStruct(req, &dtoUser); err != nil {
+		return nil, status.Error(codes.Internal, "Couldn't create user")
+	}
+
+	_, err := api.svc.Create(ctx, &dtoUser)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Couldn't create user")
 	}
 
-	return &v1.CreateUserResponse{}, nil
+	return &v1.CreateUserResponse{
+		UserProfile: &v1.UserProfile{},
+	}, nil
 }
 
 func (api *serverAPI) DeleteUser(

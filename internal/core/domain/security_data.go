@@ -8,5 +8,5 @@ type SecurityData struct {
 	Email              string
 	PasswordHash       string
 	LockoutUntil       time.Time
-	ErrorLoginAttempts int
+	ErrorLoginAttempts int32
 }

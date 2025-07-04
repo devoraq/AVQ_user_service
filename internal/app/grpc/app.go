@@ -31,9 +31,9 @@ func NewApp(
 
 	grpcServer := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
+			interceptor.ValidateInterceptor(log),
 			interceptor.PanicRecoveryInterceptor(log),
 			interceptor.LoggerInterceptor(log),
-			// interceptor.ValidateInterceptor(log),
 		),
 	)
 

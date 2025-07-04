@@ -44,13 +44,13 @@ func (repo *UserRepository) Save(
 	var daoSecData dao.SecurityData
 	var daoPrivData dao.PrivateData
 
-	if err := mapping.MappingStructDAO(agg.User, &daoUser); err != nil {
+	if err := mapping.MapStructDAO(agg.User, &daoUser); err != nil {
 		return err
 	}
-	if err := mapping.MappingStructDAO(agg.SecurityData, &daoSecData); err != nil {
+	if err := mapping.MapStructDAO(agg.SecurityData, &daoSecData); err != nil {
 		return err
 	}
-	if err := mapping.MappingStructDAO(agg.PrivateData, &daoPrivData); err != nil {
+	if err := mapping.MapStructDAO(agg.PrivateData, &daoPrivData); err != nil {
 		return err
 	}
 
@@ -77,13 +77,7 @@ func (repo *UserRepository) Save(
 	return nil
 }
 
-func insertData[T any](
-	ctx context.Context,
-	tx *sql.Tx,
-	wrapper *goqu.DialectWrapper,
-	table string,
-	data *T,
-) error {
+func insertData[T any](ctx context.Context, tx *sql.Tx, wrapper *goqu.DialectWrapper, table string, data *T) error {
 	stmt, args, err := wrapper.Insert(table).Rows(data).Prepared(true).ToSQL()
 	if err != nil {
 		return err
